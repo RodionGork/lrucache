@@ -1,9 +1,9 @@
 package main
 
 import (
-    "fmt"
-    "math/rand"
-    "time"
+	"fmt"
+	"math/rand"
+	"time"
 
 	"github.com/rodiongork/lrucache"
 )
@@ -11,8 +11,8 @@ import (
 const testSize = 20000000
 
 func test(cache lrucache.Cache[string, float64], msg string) {
-    fmt.Println(msg)
-    t0 := time.Now().UnixMilli()
+	fmt.Println(msg)
+	t0 := time.Now().UnixMilli()
 	r := rand.New(rand.NewSource(17))
 	hit := 0
 	miss := 0
@@ -31,9 +31,10 @@ func test(cache lrucache.Cache[string, float64], msg string) {
 }
 
 func main() {
-    for _, sz := range []int{50000, 100000, 250000, 500000} {
-        suffix := fmt.Sprintf("[%dk]", sz / 1000)
-        test(lrucache.NewListCache[string, float64](sz), "ListCache" + suffix)
-        test(lrucache.NewGensCache[string, float64](sz), "GensCache" + suffix)
-    }
+	for _, sz := range []int{50000, 100000, 250000, 500000} {
+		suffix := fmt.Sprintf("[%dk]", sz/1000)
+		test(lrucache.NewListCache[string, float64](sz), "ListCache"+suffix)
+		test(lrucache.NewGensCache[string, float64](sz), "GensCache"+suffix)
+		test(lrucache.NewStampsCache[string, float64](sz+sz/5, 5), "StampsCache"+suffix)
+	}
 }

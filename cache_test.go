@@ -30,13 +30,23 @@ func TestList(t *testing.T) {
 }
 
 func TestGens(t *testing.T) {
-   	cache := NewGensCache[string, string](3)
+	cache := NewGensCache[string, string](3)
 	fillCache(cache)
-    gcache := cache.(*GensCache[string, string])
-    if len(gcache.fresh) != 2 || gcache.fresh["Fig"] != "FIG" || gcache.fresh["Durian"] != "DUN" {
-        t.Errorf("wrong fresh at the end: %v", gcache.fresh)
-    }
-    if len(gcache.old) != 2 || gcache.old["Abrikos"] != "ABR" || gcache.old["Eggplant"] != "EGG" {
-        t.Errorf("wrong old at the end: %v", gcache.fresh)
-    }
+	gcache := cache.(*GensCache[string, string])
+	if len(gcache.fresh) != 2 || gcache.fresh["Fig"] != "FIG" || gcache.fresh["Durian"] != "DUN" {
+		t.Errorf("wrong fresh at the end: %v", gcache.fresh)
+	}
+	if len(gcache.old) != 2 || gcache.old["Abrikos"] != "ABR" || gcache.old["Eggplant"] != "EGG" {
+		t.Errorf("wrong old at the end: %v", gcache.fresh)
+	}
+}
+
+func TestStamps(t *testing.T) {
+	cache := NewStampsCache[string, string](4, 3)
+	fillCache(cache)
+	scache := cache.(*StampsCache[string, string])
+	t.Logf("map content: %v", scache.kv)
+	if len(scache.kv) > 4 {
+		t.Errorf("wrong size at the end: %d", len(scache.kv))
+	}
 }
